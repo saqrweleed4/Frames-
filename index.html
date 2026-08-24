@@ -31,7 +31,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%D8%A7%D9%84%20%D9%86%D8%A7%D8%B5%D8%B1%20%D9%84%D9%84%D8%A5%D8%B7%D8%A7%D8%B1%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%A8%D8%B7%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA%22%2C%22short_name%22%3A%22%D8%A7%D9%84%20%D9%86%D8%A7%D8%B5%D8%B1%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%230A84FF%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22images%2Flogo.png%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%2C%7B%22src%22%3A%22images%2Flogo.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+<link rel="manifest" href="manifest.json">
 <style>
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
     :root{
@@ -104,7 +104,7 @@
 
     .large-title{
         position:relative; overflow:hidden;
-        background-image:linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%), url('images/work-27.jpg');
+        background-image:linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%), url('images/work-09.jpg');
         background-size:cover; background-position:center;
         border-radius:20px; padding:26px 18px 22px; margin:14px 0 18px;
         box-shadow:0 8px 22px rgba(0,0,0,0.25);
@@ -130,7 +130,7 @@
     .service-hours.open24{color:#34C759;}
     .premium-card{
         position:relative; overflow:hidden;
-        background-image:linear-gradient(160deg, rgba(63,161,255,0.88) 0%, rgba(10,132,255,0.90) 50%, rgba(0,89,214,0.92) 100%), url('images/work-02.jpg');
+        background-image:linear-gradient(160deg, rgba(63,161,255,0.88) 0%, rgba(10,132,255,0.90) 50%, rgba(0,89,214,0.92) 100%), url('images/work-23.jpg');
         background-size:cover; background-position:center;
         border-radius:20px; padding:20px 19px; margin-bottom:18px;
         border:0.5px solid rgba(255,255,255,0.25);
@@ -311,13 +311,13 @@
     /* ── about us ── */
     .about-card{
         position:relative; overflow:hidden;
-        background-image:linear-gradient(160deg, rgba(35,35,38,0.92) 0%, rgba(22,22,24,0.94) 100%), url('images/work-15.jpg');
+        background-image:linear-gradient(160deg, rgba(35,35,38,0.92) 0%, rgba(22,22,24,0.94) 100%), url('images/work-37.jpg');
         background-size:cover; background-position:center;
         border-radius:20px; padding:19px 18px; margin-bottom:18px;
         border:0.5px solid rgba(10,132,255,0.25);
         box-shadow:0 8px 22px rgba(0,0,0,0.35);
     }
-    [data-theme="light"] .about-card{background-image:linear-gradient(160deg, rgba(28,28,30,0.92) 0%, rgba(0,0,0,0.94) 100%), url('images/work-15.jpg'); background-size:cover; background-position:center; box-shadow:0 8px 22px rgba(0,0,0,0.18);}
+    [data-theme="light"] .about-card{background-image:linear-gradient(160deg, rgba(28,28,30,0.92) 0%, rgba(0,0,0,0.94) 100%), url('images/work-37.jpg'); background-size:cover; background-position:center; box-shadow:0 8px 22px rgba(0,0,0,0.18);}
     .about-card::before{
         content:''; position:absolute; inset:0;
         background:radial-gradient(circle at 100% 0%, rgba(10,132,255,0.25), transparent 55%);
@@ -413,6 +413,7 @@
         font-family:'Tajawal',sans-serif; text-decoration:none;
     }
     .qr-action-btn svg{width:14px; height:14px; flex-shrink:0;}
+    .qr-action-btn span{color:#0A84FF;}
     .qr-install-btn{
         display:none; width:100%; align-items:center; justify-content:center; gap:7px;
         background:linear-gradient(145deg,#3FA1FF,#0A84FF); color:#fff;
@@ -423,6 +424,7 @@
     }
     .qr-install-btn.show{display:flex;}
     .qr-install-btn svg{width:15px; height:15px; flex-shrink:0;}
+    .qr-install-btn span{color:#fff;}
     .faq-title{font-size:19px; font-weight:800; letter-spacing:-0.2px; margin:22px 4px 10px;}
     .faq-card{background:linear-gradient(155deg,#2C2C2E,#1C1C1E); border-radius:16px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.5), 0 6px 16px rgba(0,0,0,0.35);}
     .faq-item{border-bottom:0.5px solid rgba(255,255,255,0.08);}
