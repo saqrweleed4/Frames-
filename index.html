@@ -104,7 +104,7 @@
 
     .large-title{
         position:relative; overflow:hidden;
-        background-image:linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%), url('images/work-09.jpg');
+        background-image:linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%), url('images/work-06.jpg');
         background-size:cover; background-position:center;
         border-radius:20px; padding:26px 18px 22px; margin:14px 0 18px;
         box-shadow:0 8px 22px rgba(0,0,0,0.25);
@@ -952,13 +952,11 @@
         const preview = document.getElementById('gallery-preview');
         if (preview){
             preview.innerHTML = '';
-            // مضاعفة الصور مرتين لصنع تأثير شريط لانهائي سلس
-            const doubled = GALLERY_IMAGES.concat(GALLERY_IMAGES);
-            doubled.forEach((src, i) => {
+            GALLERY_IMAGES.forEach((src, i) => {
                 const el = document.createElement('div');
                 el.className = 'gallery-scroll-item';
-                el.onclick = () => openLightbox(i % GALLERY_IMAGES.length);
-                el.innerHTML = `<img src="${src}" alt="عملنا ${(i % GALLERY_IMAGES.length)+1}" loading="lazy" onerror="this.parentElement.remove()">`;
+                el.onclick = () => openLightbox(i);
+                el.innerHTML = `<img src="${src}" alt="عملنا ${i+1}" loading="lazy" onerror="this.parentElement.remove()">`;
                 preview.appendChild(el);
             });
         }
@@ -1133,7 +1131,7 @@
     const SERVICE_CATALOG = {
         battery: [
             {id:'batt-normal', title:{ar:'بطاريات',en:'Batteries'}, desc:{ar:'بطاريات أصلية بضمان وتركيب فوري.',en:'Genuine batteries with warranty, instant installation.'}, icon:'battery',
-             img:'images/svc-battery.png',
+             img:'images/svc-battery.jpg',
              fields:[
                 {id:'name', type:'text', label:{ar:'الاسم',en:'Name'}, placeholder:{ar:'اسمك',en:'Your name'}},
                 {id:'phone', type:'tel', label:{ar:'رقم التواصل',en:'Phone Number'}, placeholder:{ar:'05xxxxxxxx',en:'05xxxxxxxx'}},
@@ -1144,7 +1142,7 @@
                 {id:'notes', type:'textarea', label:{ar:'ملاحظات',en:'Notes'}, placeholder:{ar:'أي تفاصيل إضافية تحب تذكرها...',en:'Any extra details...'}}
              ]},
             {id:'batt-sub', title:{ar:'اشتراك وفحص للبطارية',en:'Battery Boost & Check'}, desc:{ar:'توصيل ولمبة (شحن سريع) للبطارية مع فحص شامل في موقعك.',en:'Jump-start and quick charge for your battery with a full check at your location.'}, icon:'shield',
-             img:'images/svc-battery-check.png',
+             img:'images/svc-battery-check.jpg',
              fields:[
                 {id:'name', type:'text', label:{ar:'الاسم',en:'Name'}, placeholder:{ar:'اسمك',en:'Your name'}},
                 {id:'phone', type:'tel', label:{ar:'رقم التواصل',en:'Phone Number'}, placeholder:{ar:'05xxxxxxxx',en:'05xxxxxxxx'}},
@@ -1157,7 +1155,7 @@
         ],
         fuel: [
             {id:'fuel-91', title:{ar:'بنزين 91',en:'Petrol 91'}, desc:{ar:'توصيل وقود 91 لموقع سيارتك عند نفاد الوقود.',en:'Fuel 91 delivered to your car when you run out.'}, icon:'fuel',
-             img:'images/svc-fuel91.png',
+             img:'images/svc-fuel91.jpg',
              fields:[
                 {id:'name', type:'text', label:{ar:'الاسم',en:'Name'}, placeholder:{ar:'اسمك',en:'Your name'}},
                 {id:'phone', type:'tel', label:{ar:'رقم التواصل',en:'Phone Number'}, placeholder:{ar:'05xxxxxxxx',en:'05xxxxxxxx'}},
@@ -1166,7 +1164,7 @@
                 {id:'notes', type:'textarea', label:{ar:'ملاحظات',en:'Notes'}, placeholder:{ar:'أي تفاصيل إضافية تحب تذكرها...',en:'Any extra details...'}}
              ]},
             {id:'fuel-95', title:{ar:'بنزين 95',en:'Petrol 95'}, desc:{ar:'توصيل وقود 95 لموقع سيارتك عند نفاد الوقود.',en:'Fuel 95 delivered to your car when you run out.'}, icon:'fuel',
-             img:'images/svc-fuel95.png',
+             img:'images/svc-fuel95.jpg',
              fields:[
                 {id:'name', type:'text', label:{ar:'الاسم',en:'Name'}, placeholder:{ar:'اسمك',en:'Your name'}},
                 {id:'phone', type:'tel', label:{ar:'رقم التواصل',en:'Phone Number'}, placeholder:{ar:'05xxxxxxxx',en:'05xxxxxxxx'}},
@@ -1177,7 +1175,7 @@
         ],
         tire: [
             {id:'tire-swap', title:{ar:'كفرات',en:'Tires'}, desc:{ar:'تركيب وتبديل جميع مقاسات الكفرات في موقعك.',en:'Installing and replacing all tire sizes at your location.'}, icon:'tire',
-             img:'images/svc-tires.png',
+             img:'images/svc-tires.jpg',
              fields:[
                 {id:'name', type:'text', label:{ar:'الاسم',en:'Name'}, placeholder:{ar:'اسمك',en:'Your name'}},
                 {id:'phone', type:'tel', label:{ar:'رقم التواصل',en:'Phone Number'}, placeholder:{ar:'05xxxxxxxx',en:'05xxxxxxxx'}},
