@@ -934,7 +934,7 @@
             fc.appendChild(el);
         });
     }
-    renderFeatureCards();
+    // renderFeatureCards() يُستدعى لاحقاً ضمن التهيئة المؤجلة بالأسفل
 
     /* ── gallery / our work ── */
     const GALLERY_IMAGES = [
@@ -961,7 +961,7 @@
             });
         }
     }
-    renderGallery();
+    // renderGallery() يُستدعى لاحقاً ضمن التهيئة المؤجلة بالأسفل
     function openLightbox(i){
         lbIndex = i;
         updateLightbox();
@@ -1227,8 +1227,17 @@
         container.innerHTML = '';
         SERVICE_CATALOG[cat].forEach(svc => renderServiceCard(container, svc, cat));
     };
-    ['battery','fuel','tire'].forEach(cat => renderServiceCard.forCategory(cat));
-    applyLang();
+    function initialRender(){
+        renderFeatureCards();
+        renderGallery();
+        ['battery','fuel','tire'].forEach(cat => renderServiceCard.forCategory(cat));
+        applyLang();
+    }
+    if ('requestIdleCallback' in window){
+        requestIdleCallback(initialRender, {timeout: 400});
+    } else {
+        setTimeout(initialRender, 60);
+    }
 
     /* ── الأسئلة الشائعة: فتح سؤال وحد بس، بحركة سلسة ── */
     function setFaqOpen(item, open){
