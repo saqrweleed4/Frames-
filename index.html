@@ -20,11 +20,52 @@
 <meta name="twitter:title" content="ال ناصر للإطارات والبطاريات">
 <meta name="twitter:description" content="خدمة طريق متنقلة — بطاريات، بنزين، كفرات وجنوط توصلك أينما كنت.">
 <meta name="twitter:image" content="images/logo.png">
+
+<!-- Firebase SDK (compat build - works directly in browser without a bundler) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCRe0PsslPLR7PQECu3no2-7KRHNhwLOMA",
+        authDomain: "fra5-8fa62.firebaseapp.com",
+        projectId: "fra5-8fa62",
+        storageBucket: "fra5-8fa62.firebasestorage.app",
+        messagingSenderId: "39171579559",
+        appId: "1:39171579559:web:aaaca7ee0ec05b8a37c582",
+        measurementId: "G-6BXC527BTH"
+    };
+    let db = null, auth = null;
+    try{
+        if (typeof firebase !== 'undefined'){
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            auth = firebase.auth();
+        }
+    }catch(e){}
+
+    /* ── تتبع الزوار (مرة كل جلسة) ── */
+    function logVisitor(){
+        try{
+            if (!db) return;
+            const sid = sessionStorage.getItem('nasser-visit-logged');
+            if (sid) return;
+            sessionStorage.setItem('nasser-visit-logged', '1');
+            db.collection('visitors').add({
+                ts: firebase.firestore.FieldValue.serverTimestamp(),
+                ua: navigator.userAgent,
+                lang: (navigator.language || ''),
+                ref: document.referrer || ''
+            }).catch(()=>{});
+        }catch(e){}
+    }
+    logVisitor();
+</script>
 <script>
 (function(){
     try{
         var saved = localStorage.getItem('nasser-theme');
-        if(!saved){ saved = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+        if(!saved){ saved = 'light'; }
         document.documentElement.setAttribute('data-theme', saved);
     }catch(e){}
 })();
@@ -406,6 +447,10 @@
         padding:18px; margin-top:6px; box-shadow:var(--shadow);
     }
     .qr-card img{width:150px; height:150px; border-radius:10px; background:#fff; padding:8px;}
+    .qr-code-wrap{position:relative; width:150px; height:150px;}
+    .qr-code-wrap img.qr-img{width:150px; height:150px; border-radius:10px; background:#fff; padding:8px;}
+    .qr-code-wrap .qr-logo{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:34px; height:34px; border-radius:8px; background:#fff; padding:3px; box-shadow:0 0 0 3px #fff;}
+    .qr-code-wrap .qr-logo img{width:100%; height:100%; object-fit:contain; display:block;}
     .qr-card span{font-size:12px; font-weight:700; color:var(--text-secondary);}
     .qr-actions{display:flex; gap:8px; width:100%; margin-top:4px;}
     .qr-action-btn{
@@ -603,7 +648,10 @@
         </div>
 
         <div class="qr-card">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=https%3A%2F%2Ffra5-8fa62.web.app" alt="QR Code" loading="lazy">
+            <div class="qr-code-wrap">
+                <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&ecc=H&data=https%3A%2F%2Ffra5-8fa62.web.app" alt="QR Code" loading="lazy">
+                <div class="qr-logo"><img src="images/logo.png" alt="logo"></div>
+            </div>
             <span data-i18n="qr_label">امسح الكود للدخول على الموقع</span>
             <div class="qr-actions">
                 <button class="qr-action-btn" onclick="shareSite()">
@@ -842,8 +890,23 @@
     function waQuote(sid){
         const svc = findService(sid);
         if (!svc) return;
+        logRequest(sid, 'quote', {});
         const msg = `💰 *طلب عرض سعر*\n─────────────────\n🔧 *الخدمة:* ${svc.title.ar}\n\nمرحباً، أبغى أعرف سعر هذي الخدمة تقريباً 🙏`;
         openWhatsapp(msg);
+    }
+    /* ── تسجيل الطلبات (حجز أو عرض سعر) بقاعدة البيانات ── */
+    function logRequest(sid, kind, fields){
+        try{
+            if (!db) return;
+            const svc = findService(sid);
+            db.collection('requests').add({
+                ts: firebase.firestore.FieldValue.serverTimestamp(),
+                serviceId: sid,
+                serviceTitle: svc ? svc.title.ar : sid,
+                kind: kind, // 'quote' or 'book'
+                fields: fields || {}
+            }).catch(()=>{});
+        }catch(e){}
     }
 
     /* ── أشهر شركات السيارات بالسعودية (شعار + اسم) ── */
@@ -1103,6 +1166,7 @@
     function closeOrderPage(){
         document.getElementById('order-overlay').classList.remove('open');
     }
+
     function submitOrderPage(){
         const sid = document.getElementById('order-overlay').dataset.sid;
         const svc = findService(sid);
@@ -1281,9 +1345,11 @@
         const LONG_FIELDS = ['location','notes','desc','issue'];
         const DIVIDER = '─────────────────';
         let main = '', extra = '';
+        const collected = {};
         svc.fields.forEach(f => {
             const val = collectValue(sid, f);
             if (!val) return;
+            collected[f.id] = val;
             const label = typeof f.label === 'object' ? f.label.ar : f.label;
             const emoji = FIELD_EMOJI[f.id] || '•';
             if (LONG_FIELDS.includes(f.id)){
@@ -1292,6 +1358,7 @@
                 main += `${emoji} ${label}: *${val}*\n`;
             }
         });
+        logRequest(sid, 'book', collected);
         let msg = `🚘 *طلب خدمة جديد*\n${DIVIDER}\n\n🔧 *الخدمة:* ${svc.title.ar}\n\n${main}`;
         if (extra) msg += `\n${DIVIDER}\n${extra}`;
         msg += `${DIVIDER}\n🏁 *آل ناصر للإطارات والبطاريات*\n✅ تم الإرسال عبر الموقع الإلكتروني`;
