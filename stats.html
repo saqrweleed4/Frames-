@@ -207,6 +207,11 @@
         if (refreshIntervalId){ clearInterval(refreshIntervalId); refreshIntervalId = null; }
     }
 
+    const FIELD_LABELS = {
+        name:'الاسم', phone:'الجوال', 'car-company':'الشركة', 'car-model':'الموديل',
+        'car-year':'السنة', location:'الموقع', qty:'الكمية', size:'المقاس',
+        'rim-size':'مقاس الجنط', count:'العدد', desc:'الوصف', issue:'المشكلة', notes:'ملاحظات'
+    };
     /* ── تحميل الإحصائيات (تحديث تلقائي دوري كل 10 ثواني) ── */
     let refreshIntervalId = null;
 
@@ -218,6 +223,7 @@
     }
 
     function fetchAndRender(isFirstLoad){
+        if (!db) return;
         if (isFirstLoad){
             document.getElementById('loading-msg').style.display = 'block';
             document.getElementById('loading-msg').textContent = 'جارٍ تحميل البيانات...';
@@ -261,15 +267,10 @@
             done = true;
             if (timeoutId) clearTimeout(timeoutId);
             if (isFirstLoad){
-                document.getElementById('loading-msg').textContent = 'تعذر تحميل البيانات، تأكد من صلاحيات Firestore (' + (err && err.code ? err.code : 'error') + ')';
+                document.getElementById('loading-msg').textContent = 'تعذر تحميل البيانات: ' + (err && err.code ? err.code : '') + ' ' + (err && err.message ? err.message : 'خطأ غير معروف');
             }
         });
     }
-    const FIELD_LABELS = {
-        name:'الاسم', phone:'الجوال', 'car-company':'الشركة', 'car-model':'الموديل',
-        'car-year':'السنة', location:'الموقع', qty:'الكمية', size:'المقاس',
-        'rim-size':'مقاس الجنط', count:'العدد', desc:'الوصف', issue:'المشكلة', notes:'ملاحظات'
-    };
     function dayLabel(dt){
         if (!dt) return '';
         const now = new Date();
