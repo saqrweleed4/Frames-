@@ -884,7 +884,7 @@
         const svc = findService(sid);
         if (!svc) return;
         logRequest(sid, 'quote', {});
-        const msg = `💰 *طلب عرض سعر*\n─────────────────\n🔧 *الخدمة:* ${svc.title.ar}\n\nمرحباً، أبغى أعرف سعر هذي الخدمة تقريباً 🙏`;
+        const msg = `طلب عرض سعر\nالخدمة: ${svc.title.ar}\n\nمرحباً، أبغى أعرف سعر هذي الخدمة تقريباً`;
         openWhatsapp(msg);
     }
     /* ── تسجيل الطلبات (حجز أو عرض سعر) بقاعدة البيانات ── */
@@ -1335,26 +1335,17 @@
     function sendService(sid){
         const svc = findService(sid);
         if (!svc) return;
-        const LONG_FIELDS = ['location','notes','desc','issue'];
-        const DIVIDER = '─────────────────';
-        let main = '', extra = '';
+        let main = '';
         const collected = {};
         svc.fields.forEach(f => {
             const val = collectValue(sid, f);
             if (!val) return;
             collected[f.id] = val;
             const label = typeof f.label === 'object' ? f.label.ar : f.label;
-            const emoji = FIELD_EMOJI[f.id] || '•';
-            if (LONG_FIELDS.includes(f.id)){
-                extra += `${emoji} *${label}:*\n${val}\n\n`;
-            } else {
-                main += `${emoji} ${label}: *${val}*\n`;
-            }
+            main += `${label}: ${val}\n`;
         });
         logRequest(sid, 'book', collected);
-        let msg = `🚘 *طلب خدمة جديد*\n${DIVIDER}\n\n🔧 *الخدمة:* ${svc.title.ar}\n\n${main}`;
-        if (extra) msg += `\n${DIVIDER}\n${extra}`;
-        msg += `${DIVIDER}\n🏁 *آل ناصر للإطارات والبطاريات*\n✅ تم الإرسال عبر الموقع الإلكتروني`;
+        let msg = `طلب خدمة جديد\nالخدمة: ${svc.title.ar}\n\n${main}\nآل ناصر للإطارات والبطاريات`;
         openWhatsapp(msg);
     }
 
