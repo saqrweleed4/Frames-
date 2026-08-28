@@ -86,22 +86,33 @@
     }
     .err{color:#FF3B30; font-size:12px; font-weight:700; text-align:center; margin-top:10px; min-height:16px;}
 
-    .stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;}
-    .stat-card{background:var(--card-bg); border-radius:16px; padding:16px; box-shadow:var(--shadow); text-align:center;}
-    .stat-card .num{font-size:26px; font-weight:800; color:#0A84FF;}
-    .stat-card .lbl{font-size:11px; font-weight:700; color:var(--text-secondary); margin-top:2px;}
+    .stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:20px;}
+    .stat-card{background:var(--card-bg); border-radius:14px; padding:10px 8px; box-shadow:var(--shadow); text-align:center; border:1px solid var(--border); display:flex; align-items:center; gap:8px; text-align:right;}
+    .stat-icon{width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+    .stat-icon svg{width:13px; height:13px;}
+    .stat-card .num{font-size:17px; font-weight:800; letter-spacing:-0.3px; line-height:1.1;}
+    .stat-card .lbl{font-size:10px; font-weight:700; color:var(--text-secondary); margin-top:1px;}
 
     .section-title{font-size:15px; font-weight:800; margin:18px 4px 10px;}
-    .log-item{background:var(--card-bg); border-radius:14px; padding:12px 14px; box-shadow:var(--shadow); margin-bottom:8px;}
+
+    .filter-tabs{display:flex; gap:4px; background:var(--field-bg); padding:4px; border-radius:12px; margin:0 0 14px;}
+    .filter-tab{flex:1; padding:8px 4px; border:none; background:transparent; border-radius:9px; font-size:12px; font-weight:700; color:var(--text-secondary); font-family:'Tajawal',sans-serif;}
+    .filter-tab.active{background:var(--card-bg); color:var(--text); box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+
+    .log-item{background:var(--card-bg); border-radius:14px; padding:12px 14px; box-shadow:var(--shadow); margin-bottom:8px; display:flex; gap:10px; align-items:flex-start; border:1px solid var(--border);}
     .log-day-header{font-size:12.5px; font-weight:800; color:var(--text-secondary); margin:16px 2px 8px; padding-bottom:4px; border-bottom:1px solid var(--border);}
     .log-day-header:first-child{margin-top:0;}
-    .log-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;}
-    .log-kind{font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:999px;}
-    .log-kind.book{background:rgba(48,209,88,0.15); color:#30D158;}
-    .log-kind.quote{background:rgba(10,132,255,0.15); color:#0A84FF;}
-    .log-time{font-size:10.5px; color:var(--text-secondary);}
-    .log-service{font-size:13.5px; font-weight:800; margin-bottom:4px;}
-    .log-fields{font-size:11.5px; color:var(--text-secondary); line-height:1.6;}
+    .log-icon{width:32px; height:32px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center;}
+    .log-icon.book{background:rgba(48,209,88,0.15); color:#30D158;}
+    .log-icon.quote{background:rgba(10,132,255,0.15); color:#0A84FF;}
+    .log-body{flex:1; min-width:0;}
+    .log-top{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+    .log-service-name{font-size:13.5px; font-weight:800;}
+    .log-time{font-size:10.5px; color:var(--text-secondary); flex-shrink:0;}
+    .log-kind-label{font-size:10.5px; font-weight:700; margin-top:2px;}
+    .log-kind-label.book{color:#30D158;}
+    .log-kind-label.quote{color:#0A84FF;}
+    .log-fields{font-size:11.5px; color:var(--text-secondary); line-height:1.7; padding-top:7px; margin-top:6px; border-top:1px solid var(--border);}
     .log-fields b{color:var(--text); font-weight:700;}
     .empty-msg{text-align:center; color:var(--text-secondary); font-size:12.5px; padding:30px 0;}
     .loading-msg{text-align:center; padding:40px 0; color:var(--text-secondary); font-size:13px;}
@@ -144,12 +155,29 @@
         <div class="loading-msg" id="loading-msg">جارٍ تحميل البيانات...</div>
         <div id="stats-content" style="display:none;">
             <div class="stat-grid">
-                <div class="stat-card"><div class="num" id="stat-visitors-total">0</div><div class="lbl">إجمالي الزوار</div></div>
-                <div class="stat-card"><div class="num" id="stat-visitors-today">0</div><div class="lbl">زوار اليوم</div></div>
-                <div class="stat-card"><div class="num" id="stat-requests-total">0</div><div class="lbl">إجمالي الطلبات</div></div>
-                <div class="stat-card"><div class="num" id="stat-requests-book">0</div><div class="lbl">حجوزات</div></div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(10,132,255,0.12); color:#0A84FF;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+                    <div><div class="num" id="stat-visitors-total">0</div><div class="lbl">إجمالي الزوار</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(50,173,230,0.12); color:#32ADE6;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+                    <div><div class="num" id="stat-visitors-today">0</div><div class="lbl">زوار اليوم</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(255,149,0,0.12); color:#FF9500;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></div>
+                    <div><div class="num" id="stat-requests-total">0</div><div class="lbl">إجمالي الطلبات</div></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:rgba(48,209,88,0.12); color:#30D158;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+                    <div><div class="num" id="stat-requests-book">0</div><div class="lbl">حجوزات</div></div>
+                </div>
             </div>
             <div class="section-title">آخر الطلبات</div>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all" onclick="setFilter('all')">الكل</button>
+                <button class="filter-tab" data-filter="quote" onclick="setFilter('quote')">عروض الأسعار</button>
+                <button class="filter-tab" data-filter="book" onclick="setFilter('book')">الحجوزات</button>
+            </div>
             <div id="log-list"></div>
         </div>
         <button class="logout-btn" onclick="adminLogout()">تسجيل الخروج</button>
@@ -165,6 +193,8 @@
         'rim-size':'مقاس الجنط', count:'العدد', desc:'الوصف', issue:'المشكلة', notes:'ملاحظات'
     };
     var refreshIntervalId = null;
+    var allRequestsDocs = [];
+    var currentFilter = 'all';
 
     /* ── الوضع الليلي ── */
     (function(){
@@ -262,7 +292,8 @@
             document.getElementById('stat-visitors-today').textContent = visitorsToday;
             document.getElementById('stat-requests-total').textContent = requestsTotal;
             document.getElementById('stat-requests-book').textContent = requestsBook;
-            renderLog(requestsSnap.docs.map(doc => doc.data()).slice(0, 100));
+            allRequestsDocs = requestsSnap.docs.map(doc => doc.data());
+            renderLog(applyFilter(allRequestsDocs));
             if (isFirstLoad){
                 document.getElementById('loading-msg').style.display = 'none';
                 document.getElementById('stats-content').style.display = 'block';
@@ -274,6 +305,16 @@
                 document.getElementById('loading-msg').textContent = 'تعذر تحميل البيانات: ' + (err && err.code ? err.code : '') + ' ' + (err && err.message ? err.message : 'خطأ غير معروف');
             }
         });
+    }
+    function applyFilter(docs){
+        var filtered = currentFilter === 'all' ? docs : docs.filter(function(d){ return d.kind === currentFilter; });
+        return filtered.slice(0, 100);
+    }
+    function setFilter(kind){
+        currentFilter = kind;
+        var tabs = document.querySelectorAll('.filter-tab');
+        tabs.forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-filter') === kind); });
+        renderLog(applyFilter(allRequestsDocs));
     }
     function dayLabel(dt){
         if (!dt) return '';
@@ -301,18 +342,26 @@
                 lastDay = dayStr;
             }
             const timeStr = dt ? dt.toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit'}) : '';
-            const kindLabel = d.kind === 'book' ? 'حجز' : 'عرض سعر';
+            const isBook = d.kind === 'book';
+            const kindLabel = isBook ? 'حجز' : 'عرض سعر';
+            const kindClass = isBook ? 'book' : 'quote';
+            const iconSvg = isBook
+                ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'
+                : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>';
             const fieldsHtml = d.fields && Object.keys(d.fields).length
                 ? Object.entries(d.fields).map(([k,v]) => `<b>${FIELD_LABELS[k] || k}:</b> ${v}`).join(' &nbsp;•&nbsp; ')
                 : '';
             html += `
                 <div class="log-item">
-                    <div class="log-top">
-                        <span class="log-kind ${d.kind === 'book' ? 'book' : 'quote'}">${kindLabel}</span>
-                        <span class="log-time">${timeStr}</span>
+                    <div class="log-icon ${kindClass}">${iconSvg}</div>
+                    <div class="log-body">
+                        <div class="log-top">
+                            <span class="log-service-name">${d.serviceTitle || d.serviceId || ''}</span>
+                            <span class="log-time">${timeStr}</span>
+                        </div>
+                        <div class="log-kind-label ${kindClass}">${kindLabel}</div>
+                        ${fieldsHtml ? `<div class="log-fields">${fieldsHtml}</div>` : ''}
                     </div>
-                    <div class="log-service">${d.serviceTitle || d.serviceId || ''}</div>
-                    ${fieldsHtml ? `<div class="log-fields">${fieldsHtml}</div>` : ''}
                 </div>`;
         });
         list.innerHTML = html;
